@@ -10,3 +10,12 @@ export const createChatId = async (req, res) => {
       res.status(409).json({ message: error.message });
     }
   };
+export const getChatId = async (req, res) => {
+    const post = req.body;
+    const newChatId =  await chatId.findOne({...post});  
+    try {      
+      res.status(201).json(newChatId);
+    } catch (error) {
+      res.status(409).json({ message: error.message });
+    }
+  };
