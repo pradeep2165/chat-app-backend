@@ -19,3 +19,12 @@ export const getChatId = async (req, res) => {
       res.status(409).json({ message: error.message });
     }
   };
+export const getAllChatId = async (req, res) => {
+    const post = req.body;
+    const newChatId =  await chatId.find({...post});  
+    try {      
+      res.status(201).json(newChatId);
+    } catch (error) {
+      res.status(409).json({ message: error.message });
+    }
+  };
