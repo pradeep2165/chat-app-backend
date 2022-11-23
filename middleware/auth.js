@@ -1,18 +1,30 @@
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
+
 const secret = "test";
-auth = (req, res, next) => {
-  //Get the user from the jwt token and add id to req object
-  const token = req.header("auth-token");
-  if (!token) {
-    res.status(401).send({ error: "Please authonticate using a valid token" });
-  }
+
+const auth = async (req, res, next) => {
   try {
-    const data = jwt.verify(token, secret);
-    req.user = data.user;
+    const token = req.headers.authorization.split(" ")[1];
+    
+    const isCustomAuth = token.length < 500;
+
+    let decodedData;
+
+    if (token && isCustomAuth) {
+      decodedData = jwt.verify(token, secret);
+
+      req.userId = decodedData?.id;
+    } else {
+      decodedData = jwt.decode(token);
+
+      req.userId = decodedData?.sub;
+    }
+
     next();
   } catch (error) {
-    res.status(401).send({ error: "Please authonticate using a valid token" });
+    console.log(error);
   }
 };
 
-module.exports = auth;
+export default auth;
+

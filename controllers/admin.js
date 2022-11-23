@@ -6,6 +6,7 @@ import Admin from "../models/admin.js"
 const secret = "test";
 
 export const adminSignin = async (req, res) => {
+
   const { email, password } = req.body;
 
   try {
